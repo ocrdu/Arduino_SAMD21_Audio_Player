@@ -4,7 +4,7 @@ Basically, this program sends an array of samples to the DAC on pin A0. I have c
 
 ### Notes:
 
-* The values of the capacitor and resistor I use have not been calculated; they just happened to be the ones lying about within reach and the values seemed reasonable for this.
+* The values of the capacitor and resistor I use have not been calculated; they just happened to be the ones lying around within reach and the values seemed reasonable for this.
 
 * Sound quality may improve a bit if you add a low-pass filter to get rid of the "steps" in the output. Oversampling does make them smaller, but they are still there.
 
