@@ -4,7 +4,7 @@ Basically, this program sends an array of samples to the DAC on pin A0. I have c
 
 ### Notes:
 
-* The values of the capacitor and resistor I use have not been calculated; they just happened to be the ones lying around within reach and the values seemed reasonable for this.
+* The values of the capacitor and resistor I use have not been calculated; they just happened to be the ones lying around within reach and their values seemed close enough for this.
 
 * Sound quality may improve a bit if you add a low-pass filter to get rid of the "steps" in the output. Oversampling does make them smaller, but they are still there.
 
@@ -14,7 +14,7 @@ Basically, this program sends an array of samples to the DAC on pin A0. I have c
 
 ### Thanks:
 
-Thanks for all things timer-related go to Martin L. for explaining esoteric and dark stuff on the forums.
+Thanks go to Martin L. for explaining timer-related esoteric and dark stuff on the forums.
 
 ### Usage:
 
