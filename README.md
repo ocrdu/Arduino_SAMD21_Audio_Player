@@ -18,7 +18,7 @@ Thanks go to Martin L. for explaining timer-related esoteric and dark stuff on t
 
 ### Usage:
 
-Include: `#include "SoundPlayer.h"`
+Include: `#include "AudioPlayer.h"`
 
 In setup: `DACSetup(16000, 8);` for 16kHz, 8bits playback.
 
