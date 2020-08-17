@@ -59,11 +59,11 @@ void TC4_Handler() {                                // Interrupt Service Routine
     analogWrite(A0, currentSample);
     sampleInterruptCounter = 0;
     sampleNumber++;
-    if (sampleNumber >= sampleSize) {             // At the end of the samples array:
-      sampleNumber = 1;                           // Reset sample number to second sample
-      REG_TC4_CTRLA &= ~TC_CTRLA_ENABLE;          // Disable timer TC4
-      while (TC4->COUNT16.STATUS.bit.SYNCBUSY);   // Wait for synchronization
+    if (sampleNumber >= sampleSize) {               // At the end of the samples array:
+      sampleNumber = 1;                             // Reset sample number to second sample
+      REG_TC4_CTRLA &= ~TC_CTRLA_ENABLE;            // Disable timer TC4
+      while (TC4->COUNT16.STATUS.bit.SYNCBUSY);     // Wait for synchronization
     }
   }
-  REG_TC4_INTFLAG = TC_INTFLAG_OVF;               // Clear the OVF interrupt flag
+  REG_TC4_INTFLAG = TC_INTFLAG_OVF;                 // Clear the OVF interrupt flag
 }
