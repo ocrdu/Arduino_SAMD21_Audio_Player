@@ -1,7 +1,7 @@
 const uint8_t *sampleName;
 uint32_t sampleSize;
 
-volatile uint16_t sampleNumber = 1;
+volatile uint32_t sampleNumber = 1;
 volatile uint8_t sampleInterruptCounter = 0;
 
 void playSample(const uint8_t *name, const uint32_t size) {
@@ -13,8 +13,8 @@ void playSample(const uint8_t *name, const uint32_t size) {
   while (TC4->COUNT16.STATUS.bit.SYNCBUSY);       // Wait for synchronization
 }
 
-void DACSetup(uint32_t sampleFreq, uint8_t bits) {
-  analogWriteResolution(bits);                    // set DAC resolution 
+void DACSetup(uint32_t sampleFreq) {
+  analogWriteResolution(10);                      // set DAC resolution to 10 bits
   uint32_t top = 47972352 / (sampleFreq * 4);     // Calculate the TOP value from sample frequency
   REG_GCLK_GENDIV = GCLK_GENDIV_DIV(1) |          // Divide the 48MHz clock source by divisor 1: 48MHz/1=48MHz
                     GCLK_GENDIV_ID(4);            // Select GCLK4
@@ -46,16 +46,22 @@ void DACSetup(uint32_t sampleFreq, uint8_t bits) {
 }
 
 void TC4_Handler() {                              // Interrupt Service Routine for timer TC4
+  static uint16_t currentSample, previousSample;
+  currentSample = sampleName[sampleNumber];
+  currentSample = currentSample << 2;
+  previousSample = sampleName[sampleNumber - 1];
+  previousSample = previousSample << 2;
   sampleInterruptCounter++;
   if (sampleInterruptCounter == 1) {
-    analogWrite(A0, (sampleName[sampleNumber] + 2 * sampleName[sampleNumber-1]) / 3);
+    analogWrite(A0, (currentSample + (3 * previousSample)) >> 2);
   } else if (sampleInterruptCounter == 2) {
-    analogWrite(A0, (sampleName[sampleNumber] + sampleName[sampleNumber-1]) / 2);
+    analogWrite(A0, (currentSample + previousSample) >> 1);
   } else if (sampleInterruptCounter == 3) {
-    analogWrite(A0, (2 * sampleName[sampleNumber] + sampleName[sampleNumber-1]) / 3);
+    analogWrite(A0, ((3 * currentSample) + previousSample) >> 2);
   } else if (sampleInterruptCounter >= 4) {
-    analogWrite(A0, sampleName[sampleNumber++]);
+    analogWrite(A0, currentSample);
     sampleInterruptCounter = 0;
+    sampleNumber++;
   }
   REG_TC4_INTFLAG = TC_INTFLAG_OVF;               // Clear the OVF interrupt flag
   if (sampleNumber >= sampleSize) {               // When at the end of the sample array,
