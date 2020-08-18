@@ -8,7 +8,7 @@ const uint8_t HAL[] = {0x80, 0x80, 0x7F, 0x80, 0x80, 0x80, 0x7F, 0x7F, 0x80, 0x7
 const uint32_t HALSize = sizeof(HAL) / sizeof(HAL[0]);
 
 void setup() {
-  DACSetup(16000);                                // Set up DAC for 16kHz playback
+  DACSetup(16000, 2);                             // Set up DAC for 16kHz playback, 2 * oversampling
 #if defined (ARDUINO_SAMD_NANO_33_IOT)
   IMU.begin();                                    // Start the accelerometers
 #endif
@@ -20,9 +20,9 @@ void loop() {
   if (IMU.accelerationAvailable()) {
     IMU.readAcceleration(x, y, z);
     if (x > 0.15 || x < -0.15 || y > 0.15 || y < -0.15 || z > 1.15 || z < 0.85) {
-#endif      
+#endif
       playSample(HAL, HALSize);
-      delay(3000);
+      delay(3500);
 #if defined (ARDUINO_SAMD_NANO_33_IOT)
     }
   }
