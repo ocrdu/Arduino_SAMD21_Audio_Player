@@ -11,7 +11,7 @@ void DACSetup(uint32_t sampleFreq, uint8_t overSamp) {
   } else {                                                // else
     overSampling = overSamp;                              // set oversampling to 1, 2 or 4
   }
-  uint32_t top = 47972352 / (sampleFreq * overSamp);      // Calculate the TOP value 
+  uint32_t top = 47972352 / (sampleFreq * overSampling);  // Calculate the TOP value 
   REG_GCLK_GENDIV = GCLK_GENDIV_DIV(1) |                  // Divide the 48MHz clock source by 1 for 48MHz
                     GCLK_GENDIV_ID(4);                    // Select GCLK4
   while (GCLK->STATUS.bit.SYNCBUSY);                      // Wait for synchronization
@@ -48,6 +48,11 @@ void playSample(const uint8_t *name, const uint32_t size) {
   while (TC4->COUNT16.STATUS.bit.SYNCBUSY);               // Wait for synchronization
 }
 
+void pauseSample() {
+  REG_TC4_CTRLA &= ~TC_CTRLA_ENABLE;                      // Disable timer TC4
+  while (TC4->COUNT16.STATUS.bit.SYNCBUSY);               // Wait for synchronization
+}
+
 void TC4_Handler() {                                      // Interrupt Service Routine for timer TC4
   static uint16_t currentSample, previousSample = 0;
   static uint8_t sampleInterruptCounter = 0;
@@ -72,13 +77,13 @@ void TC4_Handler() {                                      // Interrupt Service R
       sampleNumber = 1;                                   // Reset sample number to second sample
     } 
   } else
-  if (sampleInterruptCounter << 1 == overSampling) {
+  if (sampleInterruptCounter << 1 == overSampling) {      // For 2x and for 4x oversampling
     analogWrite(A0, (currentSample + previousSample) >> 1);
   } else
-  if (sampleInterruptCounter << 2 == overSampling) {
+  if (sampleInterruptCounter << 2 == overSampling) {      // For 4x oversampling
     analogWrite(A0, (currentSample + (3 * previousSample)) >> 2);
   } else
-  if (sampleInterruptCounter == 3) {
+  if (sampleInterruptCounter == 3) {                      // For 4x oversampling
     analogWrite(A0, ((3 * currentSample) + previousSample) >> 2);
   }
  
