@@ -77,13 +77,13 @@ void TC4_Handler() {                                      // Interrupt Service R
       sampleNumber = 1;                                   // Reset sample number to second sample
     } 
   } else
-  if (sampleInterruptCounter << 1 == overSampling) {      // For 2x and for 4x oversampling
+  if (sampleInterruptCounter << 1 == overSampling) {      // For 2x and 4x oversampling, middle interpolation
     analogWrite(A0, (currentSample + previousSample) >> 1);
   } else
-  if (sampleInterruptCounter << 2 == overSampling) {      // For 4x oversampling
+  if (sampleInterruptCounter << 2 == overSampling) {      // For 4x oversampling, first interpolation
     analogWrite(A0, (currentSample + (3 * previousSample)) >> 2);
   } else
-  if (sampleInterruptCounter == 3) {                      // For 4x oversampling
+  if (sampleInterruptCounter == 3) {                      // For 4x oversampling, third interpolation
     analogWrite(A0, ((3 * currentSample) + previousSample) >> 2);
   }
  

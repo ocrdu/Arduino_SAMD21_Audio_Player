@@ -25,6 +25,7 @@ void loop() {
     IMU.readAcceleration(x, y, z);
     if (x > 0.15 || x < -0.15 || y > 0.15 || y < -0.15 || z > 1.15 || z < 0.85) {
 #endif
+      delay(200);
       playSample(Eurythmics, EurythmicsSize);
       delay(1500);
 #if defined (ARDUINO_SAMD_NANO_33_IOT)
