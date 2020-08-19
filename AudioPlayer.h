@@ -61,8 +61,8 @@ void TC4_Handler() {                                      // Interrupt Service R
   if (sampleInterruptCounter == 0) {                      // If this is the first pass for this sample:
     currentSample = sampleName[sampleNumber];             // Get the current sample value
     previousSample = sampleName[sampleNumber - 1];        // Get the previous sample value
-    currentSample = currentSample << 2;                   // Go to 10 bits for calculations, 
-    previousSample = previousSample << 2;                 // and also for sending to DAC
+    currentSample <<= 2;                                  // Go to 10 bits for calculations, 
+    previousSample <<= 2;                                 // and also for sending to the DAC
   }
   
   sampleInterruptCounter++;                               // Increment the interrupt counter
