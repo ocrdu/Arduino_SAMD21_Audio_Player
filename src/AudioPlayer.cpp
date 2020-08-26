@@ -1,5 +1,7 @@
 // Uses GCLK4 and TC4, affects TC5
 
+#include "AudioPlayer.h"
+
 const uint8_t *sampleName;
 uint32_t sampleSize;
 uint8_t overSampling;

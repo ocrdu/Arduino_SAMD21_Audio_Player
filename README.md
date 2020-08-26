@@ -14,7 +14,7 @@ Basically, this program sends an array of 8-bit samples to the DAC on pin A0. I 
 
 * If you have an Arduino 33 IoT, playing the sound will start when you tap your breadboard, or hit your table (Tilt!). Other Arduinos will just loop the sample with a short pause inbetween (I hope).
 
-* This is an early version; I may turn it into a proper library someday, who knows.
+* This is an early version.
 
 ### Thanks:
 
