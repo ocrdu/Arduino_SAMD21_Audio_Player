@@ -24,7 +24,7 @@ Thanks go to Martin L. for explaining timer-related esoteric and dark stuff on t
 
 ### Usage:
 
-Include: `#include "AudioPlayer.h"`
+Include: `#include <AudioPlayer.h>`
 
 In setup: `DACSetup(f, n);`  for f Hz playback with n times oversampling (n = 1, 2 or 4).
 
