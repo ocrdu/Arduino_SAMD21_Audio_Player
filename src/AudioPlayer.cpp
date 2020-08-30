@@ -7,7 +7,6 @@ uint32_t sampleSize;
 uint8_t overSampling;
 
 void DACSetup(uint32_t sampleFreq, uint8_t overSamp) {
-  analogWriteResolution(10);                              // Set DAC resolution to 10 bits
   if (overSamp != 1 && overSamp != 2 && overSamp != 4) {  // If oversampling is not set to 1, 2 or 4,
     overSampling = 1;                                     // default to 1 
   } else {                                                // else
@@ -55,6 +54,13 @@ void pauseSample() {
   while (TC4->COUNT16.STATUS.bit.SYNCBUSY);               // Wait for synchronization
 }
 
+inline void DACWrite(uint16_t sample) {
+    DAC->DATA.reg = sample;                               // Shortened version
+    while (ADC->STATUS.bit.SYNCBUSY);                     // of the code used
+    DAC->CTRLA.bit.ENABLE = 0x01;                         // in analogWrite()
+    while (ADC->STATUS.bit.SYNCBUSY);                     // in wiring_analog.c
+}
+
 void TC4_Handler() {                                      // Interrupt Service Routine for timer TC4
   static uint16_t currentSample, previousSample = 0;
   static uint8_t sampleInterruptCounter = 0;
@@ -70,7 +76,7 @@ void TC4_Handler() {                                      // Interrupt Service R
   sampleInterruptCounter++;                               // Increment the interrupt counter
 
   if (sampleInterruptCounter >= overSampling) {           // When interpolation has been handled:
-    analogWrite(A0, currentSample);                       // Send the current sample to the DAC
+    DACWrite(currentSample);                              // Send the current sample to the DAC
     sampleInterruptCounter = 0;                           // Reset the interrupt counter
     sampleNumber++;                                       // Go to the next sample
     if (sampleNumber >= sampleSize) {                     // At the end of the samples array:
@@ -80,13 +86,13 @@ void TC4_Handler() {                                      // Interrupt Service R
     } 
   } else
   if (sampleInterruptCounter << 1 == overSampling) {      // For 2x and 4x oversampling: middle interpolation
-    analogWrite(A0, (currentSample + previousSample) >> 1);
+    DACWrite((currentSample + previousSample) >> 1);
   } else
   if (sampleInterruptCounter << 2 == overSampling) {      // For 4x oversampling: first interpolation
-    analogWrite(A0, (currentSample + (3 * previousSample)) >> 2);
+    DACWrite((currentSample + (3 * previousSample)) >> 2);
   } else
   if (sampleInterruptCounter == 3) {                      // For 4x oversampling: third interpolation
-    analogWrite(A0, ((3 * currentSample) + previousSample) >> 2);
+    DACWrite(((3 * currentSample) + previousSample) >> 2);
   }
  
   REG_TC4_INTFLAG = TC_INTFLAG_OVF;                       // Clear the OVF interrupt flag

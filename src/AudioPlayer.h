@@ -9,4 +9,3 @@ extern uint8_t overSampling;
 void DACSetup(uint32_t sampleFreq, uint8_t overSamp);
 void playSample(const uint8_t *name, const uint32_t size);
 void pauseSample();
-void TC4_Handler();
