@@ -1,4 +1,4 @@
-// Uses GCLK4 and TC4, affects TC5
+// Uses GCLK3 and TC4, affects TC5
 
 #include "AudioPlayer.h"
 
@@ -14,18 +14,18 @@ void DACSetup(uint32_t sampleFreq, uint8_t overSamp) {
   }
   uint32_t top = 47972352 / (sampleFreq * overSampling);  // Calculate the TOP value 
   REG_GCLK_GENDIV = GCLK_GENDIV_DIV(1) |                  // Divide the 48MHz clock source by 1 for 48MHz
-                    GCLK_GENDIV_ID(4);                    // Select GCLK4
+                    GCLK_GENDIV_ID(3);                    // Select GCLK3
   while (GCLK->STATUS.bit.SYNCBUSY);                      // Wait for synchronization
 
   REG_GCLK_GENCTRL = GCLK_GENCTRL_IDC |                   // Set the duty cycle to 50/50
-                     GCLK_GENCTRL_GENEN |                 // Enable GCLK4
+                     GCLK_GENCTRL_GENEN |                 // Enable GCLK3
                      GCLK_GENCTRL_SRC_DFLL48M |           // Set the 48MHz clock source
-                     GCLK_GENCTRL_ID(4);                  // Select GCLK4
+                     GCLK_GENCTRL_ID(3);                  // Select GCLK3
   while (GCLK->STATUS.bit.SYNCBUSY);                      // Wait for synchronization
 
   REG_GCLK_CLKCTRL = GCLK_CLKCTRL_CLKEN |                 // Enable clock
-                     GCLK_CLKCTRL_GEN_GCLK4 |             // Select GCLK4
-                     GCLK_CLKCTRL_ID_TC4_TC5;             // Feed the GCLK4 to TC4 and TC5
+                     GCLK_CLKCTRL_GEN_GCLK3 |             // Select GCLK3
+                     GCLK_CLKCTRL_ID_TC4_TC5;             // Feed the GCLK3 to TC4 and TC5
   while (GCLK->STATUS.bit.SYNCBUSY);                      // Wait for synchronization
  
   REG_TC4_COUNT16_CC0 = top;                              // Set the TC4 CC0 register to top

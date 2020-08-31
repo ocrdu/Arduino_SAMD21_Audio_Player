@@ -1,4 +1,4 @@
-// Uses GCLK4 and TC4, affects TC5
+// Uses GCLK3 and TC4, affects TC5
 
 #include <Arduino.h>
 

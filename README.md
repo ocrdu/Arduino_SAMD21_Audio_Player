@@ -8,13 +8,15 @@ I have connected the output pin through a 2.2μF capacitor and a 1kΩ resistor i
 
 * Plays 8-bit samples in mono only. Extrapolation aka oversampling can be used to improve the output.
 
-* Uses GCLK4 and TC4, affects TC5.
+* Uses GCLK3 and TC4, affects TC5.
 
 * The values of the capacitor and resistor I use have not been calculated; they just happened to be the ones lying around within reach and their values seemed close enough for this.
 
 * Sound quality may improve a bit if you add a low-pass filter to get rid of the "steps" in the output. Extrapolation does make them smaller, but they are still there.
 
-* If you have an Arduino 33 IoT, playing the sound will start when you tap your breadboard, or hit your table (Tilt!). Other Arduinos will just loop the sample with a short pause inbetween (I hope).
+* If you have an Arduino 33 IoT, playing the sound with the example will start when you tap your breadboard, or hit your table (Tilt!). Other Arduinos will just loop the sample with a short pause inbetween (I hope).
+
+* The example will load very slowly in the Arduino IDE, because there is a large sample array in it, and the Arduino IDE isn't very good at loading large programs quickly.
 
 * This is an early version; YMMV.
 
