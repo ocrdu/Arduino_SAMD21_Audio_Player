@@ -1,4 +1,4 @@
-## A simple (but oversampling) audio player for SAMD21-based Arduinos
+## A simple (but oversampling) audio player for SAMD21G-based Arduinos
 
 Basically, this library lets you send an array of 8-bit samples to the DAC on pin A0, with optional extrapolation aka oversampling.
 
@@ -18,7 +18,7 @@ I have connected the output pin through a 2.2μF capacitor and a 1kΩ resistor i
 
 * The example will load very slowly in the Arduino IDE, because there is a large sample array in it, and the Arduino IDE isn't very good at loading large programs quickly.
 
-* This is an early version; YMMV.
+* Only tested on the Arduino Nano 33 IoT, and this is an early version; YMMV.
 
 ### Thanks:
 
